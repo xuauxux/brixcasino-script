@@ -1,0 +1,666 @@
+/* ============================================================
+   DonutTrix platform UI: owner panel + player dashboard
+   ============================================================ */
+
+:root {
+    --pf-bg: #0b0e14;
+    --pf-panel: #141923;
+    --pf-panel-2: #1a2130;
+    --pf-line: #232b38;
+    --pf-line-2: #2e394b;
+    --pf-text: #eef1f7;
+    --pf-dim: #8b95a7;
+    --pf-lime: #c9f73a;
+    --pf-lime-ink: #10140d;
+    --pf-red: #ff6b70;
+    --pf-amber: #ffc453;
+    --pf-blue: #63b3ff;
+}
+
+* { box-sizing: border-box; }
+
+body.pf {
+    margin: 0;
+    background: var(--pf-bg);
+    color: var(--pf-text);
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.pf a { color: inherit; text-decoration: none; }
+.pf h1, .pf h2, .pf h3, .pf p { margin: 0; }
+
+/* ---------------------------------------------------------------- shell */
+.pf-shell {
+    display: grid;
+    grid-template-columns: 236px minmax(0, 1fr);
+    min-height: 100vh;
+}
+
+.pf-side {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 20px 14px;
+    background: #0e1219;
+    border-right: 1px solid var(--pf-line);
+    overflow-y: auto;
+}
+
+.pf-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 6px;
+    font-size: 17px;
+    font-weight: 900;
+    letter-spacing: -.02em;
+}
+
+.pf-brand span { color: var(--pf-lime); }
+
+.pf-brand small {
+    display: block;
+    font-size: 10px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--pf-dim);
+    font-weight: 700;
+}
+
+.pf-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.pf-nav a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #b9c2d2;
+    transition: .15s ease;
+}
+
+.pf-nav a:hover { background: rgba(255, 255, 255, .05); color: #fff; }
+
+.pf-nav a.is-active {
+    background: rgba(201, 247, 58, .12);
+    color: var(--pf-lime);
+    box-shadow: inset 0 0 0 1px rgba(201, 247, 58, .28);
+}
+
+.pf-nav a .pf-owner-tag {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 999px;
+    background: rgba(255, 196, 83, .12);
+    color: var(--pf-amber);
+}
+
+.pf-side_foot {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--pf-dim);
+}
+
+.pf-main {
+    min-width: 0;
+    padding: 22px 26px 60px;
+}
+
+.pf-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.pf-title { font-size: 22px; font-weight: 800; }
+
+.pf-subtitle { margin-top: 4px; font-size: 13px; color: var(--pf-dim); }
+
+.pf-chips { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+.pf-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 11px;
+    border-radius: 999px;
+    background: var(--pf-panel);
+    border: 1px solid var(--pf-line);
+    font-size: 12px;
+    font-weight: 600;
+    color: #c6cfdd;
+}
+
+.pf-chip i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--pf-dim);
+}
+
+.pf-chip.is-on i { background: var(--pf-lime); box-shadow: 0 0 8px rgba(201, 247, 58, .8); }
+.pf-chip.is-off i { background: var(--pf-red); }
+.pf-chip.is-warn i { background: var(--pf-amber); }
+
+/* ---------------------------------------------------------------- cards */
+.pf-grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.pf-grid_2 { grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
+
+.pf-card {
+    background: var(--pf-panel);
+    border: 1px solid var(--pf-line);
+    border-radius: 14px;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.pf-card_wide { grid-column: span 2; }
+
+.pf-card_head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.pf-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--pf-dim);
+}
+
+.pf-big {
+    font-size: 30px;
+    font-weight: 900;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+    color: var(--pf-lime);
+}
+
+.pf-value {
+    font-size: 22px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+}
+
+.pf-sub { font-size: 12px; color: var(--pf-dim); }
+.pf-lime { color: var(--pf-lime); }
+.pf-red { color: var(--pf-red); }
+.pf-amber { color: var(--pf-amber); }
+.pf-dim { color: var(--pf-dim); }
+.pf-mono { font-variant-numeric: tabular-nums; }
+
+.pf-h2 { font-size: 15px; font-weight: 800; }
+.pf-h3 { font-size: 13px; font-weight: 800; color: #dfe5ef; }
+
+/* --------------------------------------------------------------- tables */
+.pf-table-wrap { overflow-x: auto; margin: 0 -4px; }
+
+.pf-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.pf-table th {
+    text-align: left;
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--pf-dim);
+    font-weight: 700;
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--pf-line);
+    white-space: nowrap;
+}
+
+.pf-table td {
+    padding: 11px 8px;
+    border-bottom: 1px solid rgba(35, 43, 56, .7);
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.pf-table tr:last-child td { border-bottom: 0; }
+.pf-table tr:hover td { background: rgba(255, 255, 255, .02); }
+
+.pf-table a { color: #fff; font-weight: 700; }
+.pf-table a:hover { color: var(--pf-lime); }
+
+.pf-empty { padding: 18px 8px; color: var(--pf-dim); text-align: center; }
+
+/* ----------------------------------------------------------- forms/btns */
+.pf-form { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
+
+.pf-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; flex: 1 1 150px; }
+
+.pf-field label {
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--pf-dim);
+}
+
+.pf-input, .pf-select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 9px;
+    border: 1px solid var(--pf-line);
+    background: #0d1219;
+    color: #fff;
+    font-size: 13px;
+    font-family: inherit;
+}
+
+.pf-input:focus, .pf-select:focus {
+    outline: none;
+    border-color: rgba(201, 247, 58, .6);
+    box-shadow: 0 0 0 3px rgba(201, 247, 58, .12);
+}
+
+.pf-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 9px;
+    background: var(--pf-lime);
+    color: var(--pf-lime-ink);
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: .15s ease;
+}
+
+.pf-btn:hover { filter: brightness(1.07); }
+
+.pf-btn_ghost {
+    background: rgba(255, 255, 255, .06);
+    color: #fff;
+    box-shadow: inset 0 0 0 1px var(--pf-line);
+}
+
+.pf-btn_danger { background: rgba(255, 107, 112, .16); color: #ff9b9e; box-shadow: inset 0 0 0 1px rgba(255, 107, 112, .4); }
+.pf-btn_sm { padding: 7px 11px; font-size: 12px; }
+
+.pf-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.pf-flash {
+    padding: 12px 16px;
+    border-radius: 12px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.pf-flash_ok { background: rgba(201, 247, 58, .1); color: var(--pf-lime); box-shadow: inset 0 0 0 1px rgba(201, 247, 58, .3); }
+.pf-flash_err { background: rgba(255, 107, 112, .1); color: #ff9b9e; box-shadow: inset 0 0 0 1px rgba(255, 107, 112, .3); }
+
+/* -------------------------------------------------------------- toggles */
+.pf-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--pf-dim);
+}
+
+.pf-switch input { accent-color: var(--pf-lime); width: 16px; height: 16px; }
+
+/* ----------------------------------------------------------- progress */
+.pf-bar {
+    height: 8px;
+    border-radius: 999px;
+    background: #0d1219;
+    overflow: hidden;
+    box-shadow: inset 0 0 0 1px var(--pf-line);
+}
+
+.pf-bar span {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #9bd21f, #d6ff5c);
+    transition: width .3s ease;
+}
+
+/* ------------------------------------------------------------ letters */
+.pf-letters { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.pf-letter {
+    width: 44px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    font-size: 20px;
+    font-weight: 900;
+    background: #0d1219;
+    color: #3b4658;
+    box-shadow: inset 0 0 0 1px var(--pf-line);
+}
+
+.pf-letter.is-have {
+    background: rgba(201, 247, 58, .12);
+    color: var(--pf-lime);
+    box-shadow: inset 0 0 0 1px rgba(201, 247, 58, .45);
+}
+
+/* --------------------------------------------------------------- misc */
+.pf-list { display: flex; flex-direction: column; gap: 10px; }
+
+.pf-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 13px;
+}
+
+.pf-rank {
+    width: 22px;
+    height: 22px;
+    display: inline-grid;
+    place-items: center;
+    border-radius: 7px;
+    background: rgba(255, 255, 255, .06);
+    font-size: 11px;
+    font-weight: 800;
+    color: #cfd7e3;
+}
+
+.pf-rank_1 { background: rgba(201, 247, 58, .2); color: var(--pf-lime); }
+.pf-rank_2 { background: rgba(201, 247, 58, .12); color: #d8ef9a; }
+.pf-rank_3 { background: rgba(255, 196, 83, .14); color: var(--pf-amber); }
+
+.pf-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+
+.pf-tab {
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: var(--pf-panel);
+    border: 1px solid var(--pf-line);
+    font-size: 12px;
+    font-weight: 700;
+    color: #b9c2d2;
+    cursor: pointer;
+}
+
+.pf-tab.is-active { background: rgba(201, 247, 58, .14); border-color: rgba(201, 247, 58, .4); color: var(--pf-lime); }
+
+@media (max-width: 900px) {
+    .pf-shell { grid-template-columns: 1fr; }
+    .pf-side { position: static; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; overflow: visible; }
+    .pf-nav { flex-direction: row; flex-wrap: wrap; }
+    .pf-side_foot { margin: 0; flex-direction: row; }
+    .pf-main { padding: 18px 14px 50px; }
+    .pf-card_wide { grid-column: span 1; }
+    .pf-topbar { flex-direction: column; align-items: flex-start; }
+}
+
+/* ============================================================
+   Player dashboard + platform pages (inside the main site layout)
+   ============================================================ */
+
+.pf-dash {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 4px 0 30px;
+}
+
+.pf-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    background: linear-gradient(120deg, #141b28 0%, #17202f 55%, #141923 100%);
+    border-color: rgba(201, 247, 58, .2);
+}
+
+.pf-hero_who { display: flex; align-items: center; gap: 14px; }
+
+.pf-avatar {
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    background: rgba(201, 247, 58, .14);
+    color: var(--pf-lime);
+    font-weight: 900;
+    font-size: 18px;
+}
+
+.pf-hero_name { font-size: 22px; font-weight: 900; letter-spacing: -.02em; }
+.pf-hero_tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+
+.pf-tag {
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .06);
+    font-size: 11px;
+    font-weight: 700;
+    color: #cfd7e3;
+}
+
+.pf-tag_ok { background: rgba(201, 247, 58, .12); color: var(--pf-lime); }
+.pf-tag_owner { background: rgba(255, 196, 83, .14); color: var(--pf-amber); }
+
+.pf-hero_balance { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+.pf-hero_balance .pf-big { font-size: 32px; }
+.pf-hero_balance small { font-size: 16px; color: var(--pf-dim); }
+
+.pf-rain {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    background: linear-gradient(120deg, rgba(201, 247, 58, .08), rgba(20, 25, 35, .6));
+    border-color: rgba(201, 247, 58, .25);
+}
+
+.pf-rain_info { display: flex; flex-direction: column; gap: 4px; }
+.pf-rain_state { font-size: 15px; font-weight: 800; }
+
+.pf-dash_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+}
+
+.pf-dash_grid_3 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+
+.pf-card_sub { background: #111722; border-color: #1e2633; }
+
+.pf-quickgames {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+    gap: 8px;
+}
+
+.pf-quickgame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 6px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    font-size: 11px;
+    font-weight: 700;
+    color: #dfe5ef;
+    transition: .15s ease;
+}
+
+.pf-quickgame:hover { border-color: rgba(201, 247, 58, .4); background: rgba(201, 247, 58, .05); }
+.pf-quickgame.is-off { opacity: .4; }
+
+.pf-quickgame_art {
+    width: 52px;
+    height: 52px;
+    border-radius: 10px;
+    background-size: cover;
+    background-position: center;
+}
+
+.pf-discord {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    background: linear-gradient(120deg, rgba(99, 179, 255, .1), rgba(20, 25, 35, .7));
+    border-color: rgba(99, 179, 255, .3);
+}
+
+/* games catalogue page */
+.pf-catalogue {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+}
+
+.pf-game { overflow: hidden; padding: 0; }
+
+.pf-game_art {
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+}
+
+.pf-game_body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 6px; }
+
+.pf-game.is-off .pf-game_art { filter: grayscale(1) brightness(.55); }
+
+/* leaderboard page */
+.pf-board { display: flex; flex-direction: column; gap: 8px; }
+
+.pf-board_row {
+    display: grid;
+    grid-template-columns: 32px 1fr auto auto;
+    gap: 10px;
+    align-items: center;
+    padding: 9px 10px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .02);
+    font-size: 13px;
+}
+
+.pf-board_row.is-me { background: rgba(201, 247, 58, .09); box-shadow: inset 0 0 0 1px rgba(201, 247, 58, .28); }
+
+/* event page */
+.pf-event {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: center;
+    text-align: center;
+}
+
+.pf-event .pf-letters { justify-content: center; }
+.pf-event .pf-letter { width: 56px; height: 66px; font-size: 26px; border-radius: 14px; }
+
+.pf-countdown { display: flex; gap: 10px; }
+
+.pf-countdown span {
+    min-width: 68px;
+    padding: 10px 8px;
+    border-radius: 12px;
+    background: #0d1219;
+    box-shadow: inset 0 0 0 1px var(--pf-line);
+    font-size: 20px;
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+}
+
+.pf-countdown span small {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    color: var(--pf-dim);
+    text-transform: uppercase;
+}
+
+@media (max-width: 720px) {
+    .pf-hero { flex-direction: column; align-items: flex-start; }
+    .pf-hero_balance { align-items: flex-start; }
+    .pf-event .pf-letter { width: 42px; height: 52px; font-size: 20px; }
+}
+
+/* ---------------------------------------------------------------------------
+   Player pages (dashboard, leaderboard, event, referrals) run inside the site
+   layout, whose body does not carry the panel's `pf` class. Set the platform
+   text colours explicitly so nothing falls back to the browser's black.
+   --------------------------------------------------------------------------- */
+
+.pf-dash,
+.pf-dash .pf-card,
+.pf-dash .pf-board_row { color: var(--pf-text); }
+
+.pf-dash h1,
+.pf-dash h2,
+.pf-dash h3 { color: #f4f7fb; }
+
+.pf-dash .pf-hero_name { color: #ffffff; }
+.pf-dash .pf-value { color: var(--pf-text); }
+
+.pf-dash .pf-countdown span { color: #ffffff; }
+.pf-dash .pf-countdown small { color: var(--pf-dim); }
+
+.pf-dash .pf-letter { color: #7c879c; }
+.pf-dash .pf-letter.is-have { color: var(--pf-lime-ink); }
+
+/* Event letters: dashed slots that fill in */
+.pf-letter {
+    background: rgba(255, 255, 255, .02);
+    color: #4a5568;
+    border: 1.5px dashed #2b3444;
+    box-shadow: none;
+}
+
+.pf-letter.is-have {
+    border: 1.5px solid rgba(201, 247, 58, .55);
+    background: rgba(201, 247, 58, .14);
+    color: var(--pf-lime);
+    box-shadow: 0 0 24px -10px rgba(201, 247, 58, .75);
+}
+
+.pf-btn:disabled { opacity: .5; cursor: not-allowed; filter: none; }
